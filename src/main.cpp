@@ -23,17 +23,17 @@ Vector3 world_to_screen(Vector3* vec, int s_width, int s_height, Matrix4* matrix
     result.z = m[2] * vec->x + m[6] * vec->y + m[10] * vec->z + m[14];
     float w  = m[3] * vec->x + m[7] * vec->y + m[11] * vec->z + m[15];
 
-	if (w < 0.01f)
-    	return {0, 0, 0};
+    if (w < 0.01f)
+        return {0, 0, 0};
 
-	Vector3 NDC;
-	NDC.x = result.x / w;
-	NDC.y = result.y / w;
-	NDC.z = result.z / w;
+    Vector3 NDC;
+    NDC.x = result.x / w;
+    NDC.y = result.y / w;
+    NDC.z = result.z / w;
 
     Vector3 screen;
-	screen.x = (s_width / 2 * NDC.x) + (NDC.x + s_width / 2);
-	screen.y = -(s_height / 2 * NDC.y) + (NDC.y + s_height / 2);
+    screen.x = (s_width / 2 * NDC.x) + (NDC.x + s_width / 2);
+    screen.y = -(s_height / 2 * NDC.y) + (NDC.y + s_height / 2);
     screen.z = 0;
     return screen;
 }
@@ -42,6 +42,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 {
     enable_console();
     WindowConfig config;
+
 
     Renderer renderer;
     WindowManager window_manager(hInstance, nCmdShow);
@@ -64,7 +65,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             }
 
     std::vector<Vector3> triangle_list = {
-        		{ 0.0f, 0.0f, 0.0f},    {0.0f, 1.0f, 0.0f},    {1.0f, 1.0f, 0.0f },
+        { 0.0f, 0.0f, 0.0f},    {0.0f, 1.0f, 0.0f},    {1.0f, 1.0f, 0.0f },
 		{ 0.0f, 0.0f, 0.0f},    {1.0f, 1.0f, 0.0f},    {1.0f, 0.0f, 0.0f },
 		{ 1.0f, 0.0f, 0.0f},    {1.0f, 1.0f, 0.0f},    {1.0f, 1.0f, 1.0f },
 		{ 1.0f, 0.0f, 0.0f},    {1.0f, 1.0f, 1.0f},    {1.0f, 0.0f, 1.0f },
@@ -77,7 +78,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 		{ 1.0f, 0.0f, 1.0f},    {0.0f, 0.0f, 1.0f},    {0.0f, 0.0f, 0.0f },
 		{ 1.0f, 0.0f, 1.0f},    {0.0f, 0.0f, 0.0f},    {1.0f, 0.0f, 0.0f },
     };
-
 
     Vector3 simple_triangle[] = {{0.0f, 0.0f, 0.0f,}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f, 0.0f}};
     bool running = true;
