@@ -1,11 +1,5 @@
 #include "example_game/core/game.h"
 
-struct TransformComponent 
-{
-    Vector3 position = {-5, 0, -5};
-    float r1, r2, r3;
-};
-
 struct CameraComponent
 {
     Matrix4 view_matrix;
@@ -69,6 +63,14 @@ public:
             {
                 pitch += -0.1;
             }
+            if (GetAsyncKeyState(VK_SPACE))
+            {
+                player_transform->position.y += 0.1;
+            }
+            if (GetAsyncKeyState(VK_LCONTROL))
+            {
+                player_transform->position.y += -0.1;
+            }
             if (pitch > 89.0f) pitch = 89.0f;
             if (pitch < -89.0f) pitch = -89.0f;
             // Normalize the yaw to be within the range 0 - 360 degrees
@@ -117,8 +119,45 @@ void Game::setup()
     engine->ecs.set_system_signature<LocalPlayerInputSystem>(local_player_input_signature);
 
 
+    //have to define systems before hand for now
+
+    auto render_system = engine->ecs.register_system<RenderSystem>();
+
+    Signature render_signature;
+    render_signature.set(engine->ecs.get_component_type_id<GeometryComponent>());
+    render_signature.set(engine->ecs.get_component_type_id<TransformComponent>());
+
+    engine->ecs.set_system_signature<RenderSystem>(render_signature);
+
+
+
+    Entity test_cube = engine->ecs.create_entity();
+    GeometryComponent cube_geometry;
+
+    cube_geometry.vertices = {
+        { 0.0f, 0.0f, 0.0f},    {0.0f, 1.0f, 0.0f},    {1.0f, 1.0f, 0.0f },
+		{ 0.0f, 0.0f, 0.0f},    {1.0f, 1.0f, 0.0f},    {1.0f, 0.0f, 0.0f },
+		{ 1.0f, 0.0f, 0.0f},    {1.0f, 1.0f, 0.0f},    {1.0f, 1.0f, 1.0f },
+		{ 1.0f, 0.0f, 0.0f},    {1.0f, 1.0f, 1.0f},    {1.0f, 0.0f, 1.0f },
+		{ 1.0f, 0.0f, 1.0f},    {1.0f, 1.0f, 1.0f},    {0.0f, 1.0f, 1.0f },
+		{ 1.0f, 0.0f, 1.0f},    {0.0f, 1.0f, 1.0f},    {0.0f, 0.0f, 1.0f },
+		{ 0.0f, 0.0f, 1.0f},    {0.0f, 1.0f, 1.0f},    {0.0f, 1.0f, 0.0f },
+		{ 0.0f, 0.0f, 1.0f},    {0.0f, 1.0f, 0.0f},    {0.0f, 0.0f, 0.0f },
+		{ 0.0f, 1.0f, 0.0f},    {0.0f, 1.0f, 1.0f},    {1.0f, 1.0f, 1.0f },
+		{ 0.0f, 1.0f, 0.0f},    {1.0f, 1.0f, 1.0f},    {1.0f, 1.0f, 0.0f },
+		{ 1.0f, 0.0f, 1.0f},    {0.0f, 0.0f, 1.0f},    {0.0f, 0.0f, 0.0f },
+		{ 1.0f, 0.0f, 1.0f},    {0.0f, 0.0f, 0.0f},    {1.0f, 0.0f, 0.0f },
+    };
+
+    cube_geometry.clr = PACK(255, 100, 20, 255);
+
+    engine->ecs.add_component(test_cube, TransformComponent{{0, 0, 0}});
+    engine->ecs.add_component(test_cube, cube_geometry);
+
+
+
     Entity local_player = engine->ecs.create_entity();
-    engine->ecs.add_component(local_player, TransformComponent{});
+    engine->ecs.add_component(local_player, TransformComponent{{-5, 0, -5}});
     engine->ecs.add_component(local_player, CameraComponent(true));
     engine->ecs.add_component(local_player, LocalPlayerComponent{});
 
@@ -130,4 +169,5 @@ void Game::setup()
     main_camera->projection_matrix = Matrix4::create_perspective(90.0f, 800.f / 600.f, 0.1f, 100.0f);
 
     engine->render_manager.set_active_view_matrix(&(main_camera->view_projection_matrix));
+
 }

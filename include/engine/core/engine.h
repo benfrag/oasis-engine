@@ -8,6 +8,12 @@
 #include "engine/core/ecs/ecs.h"
 #include "engine/core/render_manager.h"
 
+//include base components
+#include "engine/core/base_components/include_components.h"
+
+//include base systems
+#include "engine/core/base_systems/include_systems.h"
+
 class EngineCore
 {
 public:
