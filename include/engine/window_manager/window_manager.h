@@ -20,7 +20,7 @@ struct WindowConfig
 class WindowManager
 {
 public:
-    WindowManager(HINSTANCE hInstance, int nCmdShow);
+    WindowManager();
     ~WindowManager();
 
     bool create_window(WindowConfig config, IRenderable* renderer);
@@ -33,7 +33,6 @@ private:
     static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
     LRESULT class_window_proc(UINT umsg, WPARAM wparam, LPARAM lparam);
     HINSTANCE hInstance;
-    int nCmdShow;
 
     HWND hwnd{NULL};
     IRenderable* renderer;

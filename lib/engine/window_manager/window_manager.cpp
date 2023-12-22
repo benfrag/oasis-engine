@@ -1,6 +1,6 @@
 #include "engine/window_manager/window_manager.h"
 
-WindowManager::WindowManager(HINSTANCE hInstance, int nCmdShow) : hInstance(hInstance), nCmdShow(nCmdShow)
+WindowManager::WindowManager()
 {
 
 }
@@ -35,6 +35,7 @@ LRESULT CALLBACK WindowManager::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, 
 bool WindowManager::create_window(WindowConfig config, IRenderable* renderer)
 {
     this->renderer = renderer;
+    hInstance = GetModuleHandle(nullptr);
 
     WNDCLASS wc = {};
     wc.lpfnWndProc = WindowManager::WindowProc;
@@ -44,8 +45,10 @@ bool WindowManager::create_window(WindowConfig config, IRenderable* renderer)
 
     hwnd = CreateWindowEx(0, config.class_name.c_str(), config.window_name.c_str(), WS_OVERLAPPEDWINDOW, config.x, config.y, config.width, config.height, nullptr, nullptr, hInstance, this);
 
-    ShowWindow(hwnd, nCmdShow);
+    ShowWindow(hwnd, SW_SHOW);
     UpdateWindow(hwnd);
+
+    renderer->update_config(config.width, config.height);
     return true;
 }
 

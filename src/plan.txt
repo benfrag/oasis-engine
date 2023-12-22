@@ -1,0 +1,51 @@
+ECS structure
+
+
+engine controls game loop and init with appropriate callbacks to allow the game to intervene
+entities, hold physics, transform, geometry etc and update cycle etc
+
+game holds created entities, etc, handle to person and camera
+
+input handler, register events with it, input updated each game loop cycle
+
+
+Scene manager
+- manages current state of scene, all entities etc and their components
+- responsible for adding, removing, and querying entities
+
+ECS
+- RenderSystem responsible for rendering all entities with RenderComponent
+
+Renderer3D
+- called by engine during rendering phase of loop, renders triangles etc
+
+
+Engine core, holds 
+- SceneManager
+- ECSManager
+- WindowManager
+- Renderer3D and Renderer context
+
+- processes input
+- update
+- render
+- run //main loop
+
+
+main entry point
+- Initialises EngineCore
+- Initialises Game
+- sets all callbacks.
+- engine calls back to game update, which is given the up to date input.
+
+- calls engine run main loop
+- calls engine shutdown, post main loop
+
+engine either has a camera manager which handles all the cameras in the scene and the main camera is specified
+or cameras are handled by the game and game specifies to engine which camera is the main
+or camera could be an entity apart of ECS 
+
+can also have it such that any camera can render what it sees to a bitmap which can be used as a texture
+
+
+!! switch to console application, create hinstance in windowmanager

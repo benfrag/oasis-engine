@@ -1,0 +1,29 @@
+
+/*    auto render_system = engine.ecs.register_system<RenderSystem>();
+    Signature render_signature;
+    render_signature.set(engine.ecs.get_component_type_id<PositionComponent>());
+    engine.ecs.set_system_signature<RenderSystem>(render_signature);
+
+
+    Entity local_player = engine.ecs.create_entity();
+    engine.ecs.add_component(local_player, PositionComponent{0, 101.14, 0});
+    Entity enemy = engine.ecs.create_entity();
+    engine.ecs.add_component(enemy, PositionComponent{0, 13, 0});
+    engine.ecs.add_component(local_player, TransformComponent{0, 0, 0});
+//    engine.ecs.remove_component<TransformComponent>(local_player);
+
+    Entity cube = engine.ecs.create_entity();
+    std::cout << "obtained local player " << local_player << std::endl;
+    std::cout << "obtained enemy " << enemy << std::endl;
+    std::cout << "obtained cube " << cube << std::endl;
+
+    PositionComponent* pc = engine.ecs.get_component<PositionComponent>(local_player);
+
+    std::cout << " should print correct value : " << pc->y << std::endl;
+*/
+
+    //allow systems to be defined after entities
+    //what happens if state or position changes before where position is required, we will have two different positions, perhaps we need to queue actions
+
+
+

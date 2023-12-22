@@ -12,5 +12,5 @@ file(GLOB_RECURSE SOURCES
 	src/*.cpp
 	lib/*.cpp)
 
-add_executable(renderer WIN32 ${SOURCES})
+add_executable(renderer ${SOURCES})
 target_include_directories(renderer PRIVATE include)
