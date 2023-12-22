@@ -19,6 +19,10 @@ public:
     Vector3 operator*(const float delta) const {
         return Vector3(x * delta, y * delta, z * delta);
     }
+    bool operator!=(const Vector3& other) const {
+        return x != other.x || y != other.y || z != other.z;
+    }
+
      // Normalizing a vector
     void new_normalize() {
         float length = sqrt(x * x + y * y + z * z);

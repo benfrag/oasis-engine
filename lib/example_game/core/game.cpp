@@ -151,7 +151,7 @@ void Game::setup()
 
     cube_geometry.clr = PACK(255, 100, 20, 255);
 
-    engine->ecs.add_component(test_cube, TransformComponent{{0, 0, 0}});
+    engine->ecs.add_component(test_cube, TransformComponent{{0, 5, 0}});
     engine->ecs.add_component(test_cube, cube_geometry);
 
 
