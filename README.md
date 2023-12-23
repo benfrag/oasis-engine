@@ -18,7 +18,7 @@ Oasis engine is a game engine motivated by my desire to achieve further understa
 - Input Manager.
 - Texturing.
 - Multithreaded rendering.
-- Indices....
+- Indices.
 - ECS: define systems after entities, inform systems.
 - Fix w2s such that you NDC not set to 0 if off screen, ruining entire triangle.
 
