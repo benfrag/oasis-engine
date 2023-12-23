@@ -6,6 +6,7 @@
 #include <iostream>
 
 #include "engine/interfaces/irenderable.h"
+#include "engine/core/input_manager.h"
 
 struct WindowConfig
 {
@@ -20,6 +21,8 @@ struct WindowConfig
 class WindowManager
 {
 public:
+    InputManager* input_manager;
+
     WindowManager();
     ~WindowManager();
 

@@ -8,8 +8,6 @@
 //triangle queue handles world to screen
 //render system performs transformationcomponent onto meshcomponent and sends world coordinates of mesh (triangle and indices) to queue.
 
-
-
 int main()
 {
     EngineCore engine;

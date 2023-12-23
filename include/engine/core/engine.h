@@ -3,10 +3,12 @@
 #define ENGINE_H
 
 #include <windows.h>
+#include <chrono>
 #include "engine/window_manager/window_manager.h"
 #include "engine/renderer/renderer.h"
 #include "engine/core/ecs/ecs.h"
 #include "engine/core/render_manager.h"
+#include "engine/core/input_manager.h"
 
 //include base components
 #include "engine/core/base_components/include_components.h"
@@ -18,7 +20,7 @@ class EngineCore
 {
 public:
     ECSController ecs;
-//    InputManager input_manager; // holds input information for given cycle
+    InputManager input_manager; // holds input information for given cycle
     RenderManager render_manager; // queues renderables
 
     EngineCore();
@@ -38,8 +40,10 @@ private:
     bool is_running;
 
     void process_input(); //user input
-    void update();
+    void update(float dt);
     void render();
+
+    std::chrono::high_resolution_clock::time_point last_frame_time;
 };
 
 #endif

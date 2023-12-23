@@ -22,15 +22,21 @@ void EngineCore::initialize()
     ecs.engine_core = this;
     render_manager.primitive_renderer = &primitive_renderer;
     is_running = true;
+    window_manager.input_manager = &input_manager;
     window_manager.create_window(window_config, &primitive_renderer);
 }
 
 void EngineCore::run()
 {
+    last_frame_time = std::chrono::high_resolution_clock::now();
     while (is_running)
     {
+        auto current_time = std::chrono::high_resolution_clock::now();
+        float delta = std::chrono::duration<float, std::chrono::seconds::period>(current_time - last_frame_time).count();
+        last_frame_time = current_time;
+
         process_input();
-        update();
+        update(delta);
         render();
     }
 }
@@ -40,9 +46,9 @@ void EngineCore::process_input()
     window_manager.process_messages();
 }
 
-void EngineCore::update()
+void EngineCore::update(float dt)
 {
-    ecs.update_systems(1);
+    ecs.update_systems(dt);
 }
 
 void EngineCore::render()

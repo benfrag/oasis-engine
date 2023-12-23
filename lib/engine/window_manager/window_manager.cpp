@@ -1,4 +1,5 @@
 #include "engine/window_manager/window_manager.h"
+#include <windowsx.h>
 
 WindowManager::WindowManager()
 {
@@ -56,6 +57,27 @@ LRESULT WindowManager::class_window_proc(UINT umsg, WPARAM wparam, LPARAM lparam
 {
     switch (umsg)
     {
+        case WM_KEYDOWN:
+            input_manager->set_key_down(wparam);
+            break;
+        case WM_KEYUP:
+            input_manager->set_key_up(wparam);
+            break;
+        case WM_MOUSEMOVE:
+            input_manager->set_mouse_position(GET_X_LPARAM(lparam), GET_Y_LPARAM(lparam));
+            break;
+        case WM_LBUTTONDOWN:
+            input_manager->set_mouse_button_down(MOUSE_LEFT);
+            break;
+        case WM_LBUTTONUP:
+            input_manager->set_mouse_button_up(MOUSE_LEFT);
+            break;
+        case WM_RBUTTONDOWN:
+            input_manager->set_mouse_button_down(MOUSE_LEFT);
+            break;
+        case WM_RBUTTONUP:
+            input_manager->set_mouse_button_up(MOUSE_LEFT);
+            break;
         case WM_PAINT:
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hwnd, &ps);

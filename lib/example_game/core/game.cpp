@@ -17,11 +17,7 @@ struct CameraComponent
 //        yaw = 25;
     }
 
-    CameraComponent()
-    {
-        std::cout << "camera constructor called " << std::endl;
-
-    }
+    CameraComponent() {}
 };
 
 struct LocalPlayerComponent
@@ -47,30 +43,60 @@ public:
 
             float yaw = player_camera->yaw;
             float pitch = player_camera->pitch;
-            if (GetAsyncKeyState(VK_LEFT))
+            Vector3 front;
+            float yaw_rads = yaw * (3.14159f / 180.0f);
+            float pitch_rads = pitch * (3.14159f / 180.0f);
+            front.x = sin(yaw_rads) * cos(pitch_rads);
+            front.y = 0; // Keep the camera level
+            front.z = cos(yaw_rads) * cos(pitch_rads);
+            front = front.normalized();
+            Vector3 right = Vector3::new_cross(Vector3(0, 1, 0), front);
+            right.new_normalize();
+            
+            float movement_speed = 5;
+            if (engine->input_manager.is_key_pressed(VK_LEFT))
             {
-                yaw += -0.1;
+                yaw += -90 * dt;
             }
-            if (GetAsyncKeyState(VK_RIGHT))
+            if (engine->input_manager.is_key_pressed(VK_RIGHT))
             {
-                yaw += 0.1;
+                yaw += 90 * dt;
             }
-            if (GetAsyncKeyState(VK_UP))
+            if (engine->input_manager.is_key_pressed(VK_UP))
             {
-                pitch += 0.1;
+                pitch += 45 * dt;
             }
-            if (GetAsyncKeyState(VK_DOWN))
+            if (engine->input_manager.is_key_pressed(VK_DOWN))
             {
-                pitch += -0.1;
+                pitch += -45 * dt;
             }
-            if (GetAsyncKeyState(VK_SPACE))
+            if (engine->input_manager.is_key_pressed(VK_SPACE))
             {
-                player_transform->position.y += 0.1;
+                player_transform->position.y += movement_speed * dt;
             }
-            if (GetAsyncKeyState(VK_LCONTROL))
+            if (engine->input_manager.is_key_pressed(VK_CONTROL))
             {
-                player_transform->position.y += -0.1;
+                player_transform->position.y += -movement_speed * dt;
             }
+            if (engine->input_manager.is_key_pressed(0x57))
+            {
+                player_transform->position = player_transform->position + (front * movement_speed) * dt;
+            }
+            if (engine->input_manager.is_key_pressed(0x53))
+            {
+                player_transform->position = player_transform->position + (front * -movement_speed) * dt;
+            }
+            if (engine->input_manager.is_key_pressed(0x44))
+            {
+                player_transform->position = player_transform->position + (right * movement_speed) * dt;
+            }
+            if (engine->input_manager.is_key_pressed(0x41))
+            {
+                player_transform->position = player_transform->position + (right * -movement_speed) * dt;
+            }
+
+
+
             if (pitch > 89.0f) pitch = 89.0f;
             if (pitch < -89.0f) pitch = -89.0f;
             // Normalize the yaw to be within the range 0 - 360 degrees

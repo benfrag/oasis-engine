@@ -12,15 +12,21 @@ Oasis engine is a game engine motivated by my desire to achieve further understa
 - Basic geometric rendering capabilities.
 - Camera and scene management.
 
-## To be added
-- implement updating ECS with delta time tick system.
+## Next up: 
 - Z buffering.
-- Input Manager.
+- Fix input 'sticking' upon changing window focus.
 - Texturing.
-- Multithreaded rendering.
 - Indices.
+- Collision.
+- Physics.
 - ECS: define systems after entities, inform systems.
-- Fix w2s such that you NDC not set to 0 if off screen, ruining entire triangle.
+- Events, triggers, etc.
+- Fix w2s such that NDC coordinates aren't set to 0 if off screen, ruining entire triangle.
+- Multithreaded rendering.
+
+- remove camera.h, refactor renderer and renderer3d, refactor interaction between managers and engine
+- clean up math functions
+- clean up example_game
 
 ## Table of Contents
 1. [Introduction](#introduction)
