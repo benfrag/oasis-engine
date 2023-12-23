@@ -154,6 +154,22 @@ void Game::setup()
     engine->ecs.add_component(test_cube, TransformComponent{{0, 5, 0}});
     engine->ecs.add_component(test_cube, cube_geometry);
 
+    Entity test_plane = engine->ecs.create_entity();
+    GeometryComponent plane_geometry;
+
+    plane_geometry.vertices = {
+        { -5.0f, 0.0f, -5.0f},    {-5.0f, 0.0f, 5.0f},    {5.0f, 0.0f, 5.0f },
+          { -5.0f, 0.0f, -5.0f},       { 5.0f, 0.0f, 5.0f },    { 5.0f, 0.0f, -5.0f }
+     };
+
+    plane_geometry.clr = PACK(52, 191, 246, 255);
+
+    engine->ecs.add_component(test_plane, TransformComponent{{0, 0, 0}});
+    engine->ecs.add_component(test_plane, plane_geometry);
+
+
+
+
 
 
     Entity local_player = engine->ecs.create_entity();
