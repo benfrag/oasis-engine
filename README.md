@@ -24,6 +24,9 @@ Oasis engine is a game engine motivated by my desire to achieve further understa
 - Fix w2s such that NDC coordinates aren't set to 0 if off screen, ruining entire triangle.
 - Multithreaded rendering.
 
+Smaller things
+- lock mouse mechanism, unlock, mouse pos, delta
+
 - remove camera.h, refactor renderer and renderer3d, refactor interaction between managers and engine
 - clean up math functions
 - clean up example_game
