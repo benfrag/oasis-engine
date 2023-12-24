@@ -1,4 +1,7 @@
 #include "example_game/core/game.h"
+#include <unordered_map>
+#include <random>
+#include <functional>
 
 struct LocalPlayerComponent
 {
@@ -8,6 +11,57 @@ struct LocalPlayerComponent
 Game::Game(EngineCore* engine) : engine(engine)
 {
 
+}
+
+// Hash function for pairs of floats
+struct PairHash {
+    template <class T1, class T2>
+    size_t operator () (const std::pair<T1, T2> &pair) const {
+        auto hash1 = std::hash<T1>{}(pair.first);
+        auto hash2 = std::hash<T2>{}(pair.second);
+        return hash1 ^ hash2;
+    }
+};
+
+std::vector<Vector3> create_plane(float size, int grid, float maxHeight) {
+    std::vector<Vector3> vertices;
+    std::unordered_map<std::pair<float, float>, float, PairHash> heightMap;
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::uniform_real_distribution<float> dis(0, maxHeight);
+
+    float halfSize = size / 2.0f;
+    float step = size / static_cast<float>(grid);
+
+    for (int i = 0; i < grid; ++i) {
+        for (int j = 0; j < grid; ++j) {
+            float x0 = -halfSize + i * step;
+            float x1 = -halfSize + (i + 1) * step;
+            float z0 = -halfSize + j * step;
+            float z1 = -halfSize + (j + 1) * step;
+
+            // Ensure unique vertices get a random height, shared vertices use the same height
+            auto getOrCreateHeight = [&heightMap, &dis, &gen](float x, float z) {
+                auto key = std::make_pair(x, z);
+                if (heightMap.find(key) == heightMap.end()) {
+                    heightMap[key] = dis(gen); // Assign random height
+                }
+                return heightMap[key];
+            };
+
+            // Triangle 1 - Clockwise
+            vertices.push_back({x0, getOrCreateHeight(x0, z0), z0});
+            vertices.push_back({x0, getOrCreateHeight(x0, z1), z1});
+            vertices.push_back({x1, getOrCreateHeight(x1, z0), z0});
+
+            // Triangle 2 - Clockwise
+            vertices.push_back({x1, getOrCreateHeight(x1, z0), z0});
+            vertices.push_back({x0, getOrCreateHeight(x0, z1), z1});
+            vertices.push_back({x1, getOrCreateHeight(x1, z1), z1});
+        }
+    }
+
+    return vertices;
 }
 
 void Game::setup()
@@ -60,10 +114,12 @@ void Game::setup()
     Entity test_plane = engine->ecs.create_entity();
     GeometryComponent plane_geometry;
 
-    plane_geometry.vertices = {
+/*    plane_geometry.vertices = {
         { -5.0f, 0.0f, -5.0f},    {-5.0f, 0.0f, 5.0f},    {5.0f, 0.0f, 5.0f },
           { -5.0f, 0.0f, -5.0f},       { 5.0f, 0.0f, 5.0f },    { 5.0f, 0.0f, -5.0f }
      };
+*/
+    plane_geometry.vertices = create_plane(10.f, 10, 3);
 
     plane_geometry.clr = PACK(52, 191, 246, 255);
 

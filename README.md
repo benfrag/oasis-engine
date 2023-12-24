@@ -14,6 +14,7 @@ Oasis engine is a game engine motivated by my desire to achieve further understa
 
 ## Next up: 
 - Z buffering.
+- Tile based rasterization.
 - Fix input 'sticking' upon changing window focus.
 - Texturing.
 - Indices.
