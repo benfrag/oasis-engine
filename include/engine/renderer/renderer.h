@@ -4,6 +4,7 @@
 #include <windows.h>
 #include <algorithm>
 #include "engine/interfaces/irenderable.h"
+#include "engine/math/vertex.h"
 
 inline uint32_t PACK(uint8_t r, uint8_t g, uint8_t b, uint8_t a) {
         return (static_cast<uint32_t>(a) << 24) |
@@ -29,7 +30,12 @@ public:
 
     void draw_rect(int x, int y, int w, int h, uint32_t clr);
     void draw_line(int x0, int y0, int x1, int y1, uint32_t clr, int t);
-    void draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t clr);
+//    void draw_triangle(int x0, int y0, int x1, int y1, int x2, int y2, uint32_t clr);
+    void draw_triangle(const ScreenVertex& v0, const ScreenVertex& v1, const ScreenVertex& v2, uint32_t clr);
+
+    void shader_filter_hook(float dt);
+    //void shader_hook();
+    //void register_shader();
 
 private:
     int width;
@@ -37,6 +43,7 @@ private:
 
     uint32_t* front_buffer;
     uint32_t* back_buffer;
+    float* z_buffer;
 
 };
 

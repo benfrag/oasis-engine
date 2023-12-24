@@ -51,6 +51,7 @@ struct CameraComponent
 
     CameraComponent(float fov, float screen_width, float screen_height, float near_plane, float far_plane)
     {
+        //update_view at start? with position that is not related to transform? need a better solution.
         projection_matrix = Matrix4::create_perspective(fov, screen_width / screen_height, near_plane, far_plane);
     }
 

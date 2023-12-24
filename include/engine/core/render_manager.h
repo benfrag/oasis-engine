@@ -4,6 +4,8 @@
 #include "engine/math/matrix.h"
 #include "engine/core/base_components/geometry_component.h"
 #include "engine/renderer/renderer.h"
+#include "engine/window_manager/window_manager.h"
+#include "engine/math/vertex.h"
 
 #include <vector>
 
@@ -11,6 +13,7 @@ class RenderManager
 {
 public:
     Renderer* primitive_renderer;
+    WindowConfig* window_config;
 
     RenderManager();
     ~RenderManager();
@@ -22,7 +25,7 @@ public:
     void queue_geometry(GeometryComponent geometry);
     void render_geometry_queue();
 
-    Vector3 world_to_screen(const Vector3& vec, int s_width, int s_height, bool is_combined);
+    ScreenVertex world_to_screen(const Vector3& vec);
 
 private:
     Matrix4* view_projection_matrix = NULL;

@@ -1,5 +1,7 @@
 #include "engine/renderer/renderer.h"
 #include <iostream>
+#include <limits>
+#undef max
 
 Renderer::Renderer()
 {
@@ -28,8 +30,10 @@ void Renderer::update_config(int width, int height)
 
 //    alignas(32) uint32_t* back_buffer = new uint32_t[width * height];
 
+   z_buffer = new float[width * height];
     std::fill_n(front_buffer, width * height, 0xFF00FFFF);
     std::fill_n(back_buffer, width * height, 0xFF00FFFF);
+    std::fill_n(z_buffer, width * height, std::numeric_limits<float>::max());
 }
 
 uint32_t* Renderer::get_front_buffer()
@@ -50,6 +54,7 @@ int Renderer::get_height()
 void Renderer::cycle_start()
 {
     std::fill_n(back_buffer, width * height, 0xFF000000);
+    std::fill_n(z_buffer, width * height, std::numeric_limits<float>::max());
 }
 
 void Renderer::cycle_end()

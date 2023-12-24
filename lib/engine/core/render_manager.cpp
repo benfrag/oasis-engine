@@ -22,7 +22,7 @@ Matrix4* RenderManager::get_active_view_matrix()
     return view_projection_matrix;
 }
 
-Vector3 RenderManager::world_to_screen(const Vector3& vec, int s_width, int s_height, bool is_combined)
+ScreenVertex RenderManager::world_to_screen(const Vector3& vec)
 {
     Matrix4* matrix = view_projection_matrix;
     Vector3 result;
@@ -40,10 +40,13 @@ Vector3 RenderManager::world_to_screen(const Vector3& vec, int s_width, int s_he
     NDC.y = result.y / w;
     NDC.z = result.z / w;
 
-    Vector3 screen;
-    screen.x = (s_width / 2 * NDC.x) + (NDC.x + s_width / 2);
-    screen.y = -(s_height / 2 * NDC.y) + (NDC.y + s_height / 2);
-    screen.z = 0;
+    ScreenVertex screen;
+    int width = window_config->width;
+    int height = window_config->height;
+
+    screen.x = static_cast<int>((1 + NDC.x) * width * 0.5);
+    screen.y = static_cast<int>((1 - NDC.y) * height * 0.5);
+    screen.z = w;
     return screen;
 }
 
@@ -69,13 +72,14 @@ void RenderManager::render_geometry(std::size_t index)
 
     for (std::size_t i = 0; i < geometry.vertices.size(); i += 3)
     {
-        std::array<Vector3, 3> list_screen;
+        std::array<ScreenVertex, 3> list_screen;
         std::transform(geometry.vertices.begin() + i, geometry.vertices.begin() + i + 3, list_screen.begin(),
                        [this](const Vector3& pt) {
-                           return world_to_screen(pt, 800, 600, true);
+                           return world_to_screen(pt);
                        });
 
-        primitive_renderer->draw_triangle(list_screen[0].x, list_screen[0].y, list_screen[1].x, list_screen[1].y, list_screen[2].x, list_screen[2].y, geometry.clr);
+        primitive_renderer->draw_triangle(list_screen[0], list_screen[1], list_screen[2], geometry.clr);
+//        primitive_renderer->draw_triangle(list_screen[0].x, list_screen[0].y, list_screen[1].x, list_screen[1].y, list_screen[2].x, list_screen[2].y, geometry.clr);
     }
 }
 

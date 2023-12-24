@@ -18,6 +18,8 @@ int main()
         WindowConfig window_config;
         window_config.width = 800;
         window_config.height = 600;
+        //window_config.width = 320;
+        //window_config.height = 240;
         engine.configure_window(window_config);
         engine.initialize();
 

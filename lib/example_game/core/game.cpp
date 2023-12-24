@@ -133,7 +133,7 @@ void Game::setup()
 
     Entity local_player = engine->ecs.create_entity();
     engine->ecs.add_component(local_player, TransformComponent{{-5, 0, -5}});
-    engine->ecs.add_component(local_player, CameraComponent(90.0f, 800.0f, 600.0f, 0.1f, 100.0f));
+    engine->ecs.add_component(local_player, CameraComponent(90.0f, engine->get_window_config().width, engine->get_window_config().height, 0.1f, 100.0f));
     engine->ecs.add_component(local_player, LocalPlayerComponent{});
 
     CameraComponent* main_camera = engine->ecs.get_component<CameraComponent>(local_player);

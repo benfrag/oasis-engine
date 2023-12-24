@@ -31,6 +31,8 @@ public:
     void shutdown();
 
     void configure_window(WindowConfig window_config);
+    void reconfigure_window(WindowConfig window_config);
+    WindowConfig get_window_config();
 
 private:
     WindowConfig window_config;
@@ -41,7 +43,7 @@ private:
 
     void process_input(); //user input
     void update(float dt);
-    void render();
+    void render(float dt);
 
     std::chrono::high_resolution_clock::time_point last_frame_time;
 };

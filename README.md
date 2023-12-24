@@ -13,9 +13,9 @@ Oasis engine is a game engine motivated by my desire to achieve further understa
 - Camera and scene management.
 
 ## Next up: 
-- Z buffering.
 - Tile based rasterization.
 - Fix input 'sticking' upon changing window focus.
+- Lighting.
 - Texturing.
 - Indices.
 - Collision.
@@ -25,9 +25,12 @@ Oasis engine is a game engine motivated by my desire to achieve further understa
 - Fix w2s such that NDC coordinates aren't set to 0 if off screen, ruining entire triangle.
 - Multithreaded rendering.
 - Create intermediary "helper" for interaction with the engine, mediator between game and engine, acting as a wrapper while still allowing for lower level interaction with the engine.
+- Linux support
 
 Smaller things
 - lock mouse mechanism, unlock, mouse pos, delta
+- proper shutdowns, deallocate memory
+- implement overdraw or better method of handling remaining pixels after AVX2 rasterization.
 
 - remove camera.h, refactor renderer and renderer3d, refactor interaction between managers and engine
 - clean up math functions

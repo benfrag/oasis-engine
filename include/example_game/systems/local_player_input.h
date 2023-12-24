@@ -28,7 +28,7 @@ public:
     }
 
 private:
-    const float MOUSE_SENSITIVITY = 15.f;
+    const float MOUSE_SENSITIVITY = 90.f;
     const float MOVEMENT_SPEED = 5.0f;
 
     bool update_camera_rotation(EngineCore* engine, CameraComponent* camera, float dt)
