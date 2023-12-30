@@ -26,11 +26,14 @@ Oasis engine is a game engine motivated by my desire to achieve further understa
 - Multithreaded rendering.
 - Create intermediary "helper" for interaction with the engine, mediator between game and engine, acting as a wrapper while still allowing for lower level interaction with the engine.
 - Linux support
+- add logging class.
 
 Smaller things
 - lock mouse mechanism, unlock, mouse pos, delta
 - proper shutdowns, deallocate memory
 - implement overdraw or better method of handling remaining pixels after AVX2 rasterization.
+- fix windowconfig width, height, window_width, window_height
+- adjust near plane in clipping func to be that of current cameras near plane.
 
 - remove camera.h, refactor renderer and renderer3d, refactor interaction between managers and engine
 - clean up math functions

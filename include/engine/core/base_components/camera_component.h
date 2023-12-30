@@ -9,6 +9,8 @@ struct CameraComponent
     float yaw = 0, pitch = 0; //replace with quaternions
     float edited_variable = 0;
 
+    Vector3 last_position = {0, 0, 0};
+
     void update_view(Vector3 position)
     {
         view_matrix = Matrix4::create_view(position, yaw, pitch);

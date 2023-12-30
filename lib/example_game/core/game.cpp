@@ -66,17 +66,23 @@ std::vector<Vector3> create_plane(float size, int grid, float maxHeight) {
 
 void Game::setup()
 {
+    auto physics_system = engine->ecs.register_system<PhysicsSystem>();
+
+    Signature physics_signature;
+    physics_signature.set(engine->ecs.get_component_type_id<TransformComponent>());
+    physics_signature.set(engine->ecs.get_component_type_id<PhysicsComponent>());
+
+    engine->ecs.set_system_signature<PhysicsSystem>(physics_signature);
+
     auto local_player_input_system = engine->ecs.register_system<LocalPlayerInputSystem>();
 
     Signature local_player_input_signature;
     local_player_input_signature.set(engine->ecs.get_component_type_id<LocalPlayerComponent>());
     local_player_input_signature.set(engine->ecs.get_component_type_id<TransformComponent>());
     local_player_input_signature.set(engine->ecs.get_component_type_id<CameraComponent>());
+    local_player_input_signature.set(engine->ecs.get_component_type_id<PhysicsComponent>());
 
     engine->ecs.set_system_signature<LocalPlayerInputSystem>(local_player_input_signature);
-
-
-    //have to define systems before hand for now
 
     auto render_system = engine->ecs.register_system<RenderSystem>();
 
@@ -86,7 +92,7 @@ void Game::setup()
 
     engine->ecs.set_system_signature<RenderSystem>(render_signature);
 
-
+    //have to define systems before hand for now
 
     Entity test_cube = engine->ecs.create_entity();
     GeometryComponent cube_geometry;
@@ -135,6 +141,7 @@ void Game::setup()
     engine->ecs.add_component(local_player, TransformComponent{{-5, 0, -5}});
     engine->ecs.add_component(local_player, CameraComponent(90.0f, engine->get_window_config().width, engine->get_window_config().height, 0.1f, 100.0f));
     engine->ecs.add_component(local_player, LocalPlayerComponent{});
+    engine->ecs.add_component(local_player, PhysicsComponent{});
 
     CameraComponent* main_camera = engine->ecs.get_component<CameraComponent>(local_player);
     std::cout << "comp yaw : " << main_camera->yaw << std::endl;

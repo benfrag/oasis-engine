@@ -14,6 +14,8 @@ struct WindowConfig
     std::wstring class_name{L"default_class"};
     int width{1280};
     int height{720};
+    int window_width{1280};
+    int window_height{720};
     int x = CW_USEDEFAULT;
     int y = CW_USEDEFAULT;
 };
@@ -26,13 +28,14 @@ public:
     WindowManager();
     ~WindowManager();
 
-    bool create_window(WindowConfig config, IRenderable* renderer);
+    bool create_window(WindowConfig* config, IRenderable* renderer);
     bool process_messages();
     void update_window();
 
     HWND get_hwnd();
 
 private:
+    WindowConfig* window_config;
     static LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
     LRESULT class_window_proc(UINT umsg, WPARAM wparam, LPARAM lparam);
     HINSTANCE hInstance;

@@ -13,15 +13,18 @@ public:
         {
             CameraComponent* player_camera = engine->ecs.get_component<CameraComponent>(entity);
             TransformComponent* player_transform = engine->ecs.get_component<TransformComponent>(entity);
+            PhysicsComponent* player_physics = engine->ecs.get_component<PhysicsComponent>(entity);
 
             bool has_changed = false;
             bool has_changed2 = false;
             has_changed = update_camera_rotation(engine, player_camera, dt);
-            has_changed2 = update_player_position(engine, player_camera, player_transform, dt);
+            has_changed2 = update_player_position(engine, player_camera, player_physics, player_transform, dt);
             if (has_changed || has_changed2)
             {
                 player_camera->clamp_rotation();
-                player_camera->update_view(player_transform->position);
+                Vector3 new_position = player_transform->position;
+                player_camera->update_view(new_position);
+                player_camera->last_position = new_position;
             }
        }
 
@@ -30,6 +33,7 @@ public:
 private:
     const float MOUSE_SENSITIVITY = 90.f;
     const float MOVEMENT_SPEED = 5.0f;
+    const float MOVEMENT_ACCELERATION = 4.0f;
 
     bool update_camera_rotation(EngineCore* engine, CameraComponent* camera, float dt)
     {
@@ -59,7 +63,7 @@ private:
         return has_changed;
     }
 
-    bool update_player_position(EngineCore* engine, CameraComponent* camera, TransformComponent* transform, float dt)
+    bool update_player_position(EngineCore* engine, CameraComponent* camera, PhysicsComponent* physics, TransformComponent* transform, float dt)
     {
         //should be based on velocity should perhaps just update the camera if the position has changed
         //but allow the physics systems to do the movement
@@ -68,6 +72,7 @@ private:
         bool has_changed = false;
         Vector3 front = camera->get_front();
         Vector3 right = Vector3::new_cross(Vector3(0, 1, 0), front).normalized();
+        Vector3 movement_acceleration = 0;
 
         if (engine->input_manager.is_key_pressed(VK_SPACE))
         {
@@ -81,8 +86,9 @@ private:
         }
         if (engine->input_manager.is_key_pressed(0x57))  // W Key
         {
-            transform->position = transform->position + front * MOVEMENT_SPEED * dt;
-            has_changed = true;
+            movement_acceleration = front * MOVEMENT_ACCELERATION;
+//            transform->position = transform->position + front * MOVEMENT_SPEED * dt;
+//            has_changed = true;
         }
         if (engine->input_manager.is_key_pressed(0x53))  // S Key
         {
@@ -99,6 +105,13 @@ private:
             transform->position = transform->position - right * MOVEMENT_SPEED * dt;
             has_changed = true;
         }
+        
+        if (transform->position != camera->last_position)
+        {
+            has_changed = true;
+        }
+
+        physics->acceleration = movement_acceleration;
 
         return has_changed;
     }

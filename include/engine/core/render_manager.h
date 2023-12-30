@@ -25,6 +25,8 @@ public:
     void queue_geometry(GeometryComponent geometry);
     void render_geometry_queue();
 
+    Vector4 world_to_vec4(const Vector3& vec);
+    ScreenVertex vec4_to_screen(const Vector4& vec);
     ScreenVertex world_to_screen(const Vector3& vec);
 
 private:

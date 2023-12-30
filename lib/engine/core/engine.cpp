@@ -38,7 +38,7 @@ void EngineCore::initialize()
     render_manager.window_config = &window_config;
     is_running = true;
     window_manager.input_manager = &input_manager;
-    window_manager.create_window(window_config, &primitive_renderer);
+    window_manager.create_window(&window_config, &primitive_renderer);
 }
 
 void EngineCore::run()

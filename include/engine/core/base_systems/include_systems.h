@@ -2,5 +2,6 @@
 #define INCLUDE_SYSTEMS_H
 
 #include "engine/core/base_systems/render_system.h"
+#include "engine/core/base_systems/physics_system.h"
 
 #endif

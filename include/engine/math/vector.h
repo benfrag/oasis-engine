@@ -2,6 +2,25 @@
 #define VECTOR_H
 #include <cmath>
 
+class Vector4
+{
+public:
+    float x, y, z, w;
+
+    Vector4 operator-(const Vector4& other) const
+    {
+        return Vector4(x - other.x, y - other.y, z - other.z, w - other.w);
+    }
+    Vector4 operator+(const Vector4& other) const
+    {
+        return Vector4(x + other.x, y + other.y, z + other.z, w + other.w);
+    }
+    Vector4 operator*(const float delta) const
+    {
+        return Vector4(x * delta, y * delta, z * delta, w * delta);
+    }
+};
+
 class Vector3
 {
 public:

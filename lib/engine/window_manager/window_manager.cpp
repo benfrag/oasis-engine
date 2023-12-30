@@ -33,23 +33,24 @@ LRESULT CALLBACK WindowManager::WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, 
     return DefWindowProc(hwnd, uMsg, wParam, lParam);
 }
 
-bool WindowManager::create_window(WindowConfig config, IRenderable* renderer)
+bool WindowManager::create_window(WindowConfig* config, IRenderable* renderer)
 {
+    this->window_config = config;
     this->renderer = renderer;
     hInstance = GetModuleHandle(nullptr);
 
     WNDCLASS wc = {};
     wc.lpfnWndProc = WindowManager::WindowProc;
     wc.hInstance = hInstance;
-    wc.lpszClassName = config.class_name.c_str();
+    wc.lpszClassName = config->class_name.c_str();
     RegisterClass(&wc);
 
-    hwnd = CreateWindowEx(0, config.class_name.c_str(), config.window_name.c_str(), WS_OVERLAPPEDWINDOW, config.x, config.y, config.width, config.height, nullptr, nullptr, hInstance, this);
+    hwnd = CreateWindowEx(0, config->class_name.c_str(), config->window_name.c_str(), WS_OVERLAPPEDWINDOW, config->x, config->y, config->window_width, config->window_height, nullptr, nullptr, hInstance, this);
 
     ShowWindow(hwnd, SW_SHOW);
     UpdateWindow(hwnd);
 
-    renderer->update_config(config.width, config.height);
+    renderer->update_config(config->width, config->height);
     return true;
 }
 
@@ -82,20 +83,20 @@ LRESULT WindowManager::class_window_proc(UINT umsg, WPARAM wparam, LPARAM lparam
             PAINTSTRUCT ps;
             HDC hdc = BeginPaint(hwnd, &ps);
 
-            int width, height;
-            width = renderer->get_width();
-            height = renderer->get_height();
+//            int width, height;
+//            width = renderer->get_width();
+//            height = renderer->get_height();
 
             uint32_t* front_buffer = renderer->get_front_buffer();
             BITMAPINFO bmi = {};
             bmi.bmiHeader.biSize = sizeof(bmi.bmiHeader);
-            bmi.bmiHeader.biWidth = width;
-            bmi.bmiHeader.biHeight = -height;
+            bmi.bmiHeader.biWidth = window_config->width;
+            bmi.bmiHeader.biHeight = -window_config->height;
             bmi.bmiHeader.biPlanes = 1;
             bmi.bmiHeader.biBitCount = 32;
             bmi.bmiHeader.biCompression = BI_RGB;
 
-            StretchDIBits(hdc, 0, 0, width, height, 0, 0, width, height, front_buffer, &bmi, DIB_RGB_COLORS, SRCCOPY);
+            StretchDIBits(hdc, 0, 0, window_config->window_width, window_config->window_height, 0, 0, window_config->width, window_config->height, front_buffer, &bmi, DIB_RGB_COLORS, SRCCOPY);
             EndPaint(hwnd, &ps);
             return 0;
     }
