@@ -33,7 +33,7 @@ public:
 private:
     const float MOUSE_SENSITIVITY = 90.f;
     const float MOVEMENT_SPEED = 5.0f;
-    const float MOVEMENT_ACCELERATION = 4.0f;
+    const float MOVEMENT_ACCELERATION = 10.0f;
 
     bool update_camera_rotation(EngineCore* engine, CameraComponent* camera, float dt)
     {
@@ -86,24 +86,29 @@ private:
         }
         if (engine->input_manager.is_key_pressed(0x57))  // W Key
         {
-            movement_acceleration = front * MOVEMENT_ACCELERATION;
+            movement_acceleration = movement_acceleration + front;
+            //movement_acceleration = front * MOVEMENT_ACCELERATION;
 //            transform->position = transform->position + front * MOVEMENT_SPEED * dt;
 //            has_changed = true;
         }
         if (engine->input_manager.is_key_pressed(0x53))  // S Key
         {
-            transform->position = transform->position - front * MOVEMENT_SPEED * dt;
-            has_changed = true;
+//            transform->position = transform->position - front * MOVEMENT_SPEED * dt;
+//            has_changed = true;
+//
+            movement_acceleration = movement_acceleration - front;
         }
         if (engine->input_manager.is_key_pressed(0x44))  // D Key
         {
-            transform->position = transform->position + right * MOVEMENT_SPEED * dt;
-            has_changed = true;
+            //transform->position = transform->position + right * MOVEMENT_SPEED * dt;
+       //     has_changed = true;
+            movement_acceleration = movement_acceleration + right;
         }
         if (engine->input_manager.is_key_pressed(0x41))  // A Key
         {
-            transform->position = transform->position - right * MOVEMENT_SPEED * dt;
-            has_changed = true;
+            //transform->position = transform->position - right * MOVEMENT_SPEED * dt;
+            //has_changed = true;
+            movement_acceleration = movement_acceleration - right;
         }
         
         if (transform->position != camera->last_position)
@@ -111,7 +116,10 @@ private:
             has_changed = true;
         }
 
-        physics->acceleration = movement_acceleration;
+
+physics->acceleration = movement_acceleration.normalized() * MOVEMENT_ACCELERATION;
+
+        //physics->acceleration = movement_acceleration;
 
         return has_changed;
     }

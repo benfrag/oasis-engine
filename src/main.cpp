@@ -16,8 +16,11 @@ int main()
     try
     {
         WindowConfig window_config;
-        window_config.width = 320;
-        window_config.height = 240;
+//        window_config.width = 320;
+//        window_config.height = 240;
+        window_config.width = 800;
+        window_config.height = 600;
+
         window_config.window_width = 1920;
         window_config.window_height = 1080;
         //window_config.width = 320;

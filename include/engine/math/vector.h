@@ -42,12 +42,21 @@ public:
         return x != other.x || y != other.y || z != other.z;
     }
 
+    Vector3 operator/(const float delta) const {
+        return Vector3(x / delta, y / delta, z / delta);
+    }
+
      // Normalizing a vector
     void new_normalize() {
         float length = sqrt(x * x + y * y + z * z);
         x /= length;
         y /= length;
         z /= length;
+    }
+
+    static Vector3 multiply(Vector3& a, Vector3& b)
+    {
+        return Vector3(a.x * b.x, a.y * b.y, a.z * b.z);
     }
 
     // Cross product
